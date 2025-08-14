@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko By Zann — Kece Plus</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    /* === Background Neon Bergerak + Partikel Halus === */
+    :root{
+      --glass-bg: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.18);
+      --neon-cyan: #00fff0;
+      --neon-pink: #ff36d1;
+      --neon-yellow: #ffe84a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      background: linear-gradient(-45deg, #1a002b, #0b154a, #012e2a, #3b003b);
+      background-size: 400% 400%;
+      animation: gradientMove 16s ease infinite;
+      overflow-x: hidden;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    /* Grain overlay sangat halus */
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:0;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(255,255,255,0.03) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.02) 0 1px, transparent 1px);
+      background-size: 16px 16px, 20px 20px;
+      mix-blend-mode: screen;
+    }
+
+    header, main, footer, .led-container { position: relative; z-index: 1; }
+
+    /* === Header Neon 3D + Glitch === */
+    header {
+      text-align: center;
+      padding: 64px 16px 32px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0));
+      position: relative;
+    }
+    .title-wrap{
+      display:inline-block;
+      position:relative;
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      box-shadow:
+        0 0 24px rgba(0,255,255,0.18),
+        inset 0 0 12px rgba(255,255,255,0.05);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+    }
+    h1.title {
+      --tx: "WELCOME TO WEBSITE ZANN";
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(28px, 6vw, 48px);
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: 1px;
+      position: relative;
+      color: #fff;
+      text-shadow:
+        0 0 6px #00ffe6,
+        0 0 18px #00ffe6,
+        0 0 28px #a100ff;
+    }
+    /* Glitch layers */
+    h1.title::before,
+    h1.title::after{
+      content: var(--tx);
+      position:absolute; left:0; top:0; width:100%;
+      clip-path: inset(0 0 0 0);
+      opacity:.7;
+    }
+    h1.title::before{ color: var(--neon-cyan); transform: translate(1.2px, 0); mix-blend-mode: screen; }
+    h1.title::after { color: var(--neon-pink); transform: translate(-1.2px, 0); mix-blend-mode: screen; }
+    /* Glitch jitter */
+    @keyframes glitch {
+      0%,100% { transform: translate(0,0); }
+      20% { transform: translate(0.8px,-0.4px); }
+      40% { transform: translate(-0.6px,0.6px); }
+      60% { transform: translate(1px,0.2px); }
+      80% { transform: translate(-0.8px,-0.6px); }
+    }
+    .title-wrap:hover .title,
+    .title-wrap:hover .title::before,
+    .title-wrap:hover .title::after{ animation: glitch 0.7s steps(2,end) infinite; }
+
+    /* === LED Text Berjalan (Hacker VT323) === */
+    .led-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      border: 1px solid var(--glass-border);
+      border-left: 0; border-right:0;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.35);
+      box-shadow: 0 4px 25px rgba(0,0,0,0.2), inset 0 0 24px rgba(0,255,255,0.15);
+      padding: 12px 0;
+    }
+    .led-text {
+      font-family: 'VT323', monospace;
+      letter-spacing: 2px;
+      display: inline-block;
+      padding-left: 100%;
+      font-size: clamp(18px, 3.8vw, 28px);
+      animation: berjalan 12s linear infinite, glow 1.5s ease-in-out infinite alternate, flicker 3s infinite;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @keyframes berjalan { 0% { transform: translateX(0%);} 100% { transform: translateX(-100%);} }
+    @keyframes glow { 0% { text-shadow: 0 0 6px var(--neon-cyan);} 100% { text-shadow: 0 0 14px var(--neon-pink);} }
+    @keyframes flicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+      20%, 24%, 55% { opacity: 0.6; }
+    }
+    .led-container:hover .led-text { animation-play-state: paused; }
+
+    /* === Layout Utama + Glass Cards dengan Border Gradient === */
+    main { padding: 28px 14px 56px; max-width: 980px; margin: auto; }
+    .card {
+      position: relative;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 18px 0;
+      backdrop-filter: blur(8px);
+      color: #e9f5ff;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{ transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    /* Animated gradient border */
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius:18px;
+      padding:2px;
+      background: conic-gradient(from 0deg, var(--neon-cyan), var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg);} }
+
+    /* === Buttons Neon Pulse === */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 18px; border-radius: 10px;
+      text-decoration: none; font-weight: bold; color: #101014;
+      background: linear-gradient(90deg, #00f5ff, #8a2be2);
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 0 16px rgba(0,255,255,0.35);
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn:hover{ transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 0 24px rgba(255,0,255,0.4), 0 0 12px rgba(0,255,255,0.4); }
+    .btn-pink{ background: linear-gradient(90deg, #ff2bd6, #ff6ec7); color: white; }
+    .btn-green{ background: linear-gradient(90deg, #00ffa5, #00d18f); color: #0b0f0e; }
+    .btn-blue { background: linear-gradient(90deg, #00c6ff, #0072ff); color: white; }
+
+    /* Pulse anim */
+    .btn.pulse{ animation: pulse 2.2s ease-in-out infinite; }
+    @keyframes pulse{
+      0%,100%{ box-shadow: 0 0 12px rgba(0,255,255,.25); }
+      50%{ box-shadow: 0 0 26px rgba(255,0,255,.45); }
+    }
+
+    /* === Visualizer Area === */
+    .controls { text-align:center; margin-top: 8px; }
+    .volume-control {
+      display: none;
+      margin: 14px auto 0;
+      width: max(260px, 40%);
+      background: rgba(0,0,0,0.35);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 0 14px rgba(0,255,255,0.25);
+      font-weight: bold;
+      backdrop-filter: blur(6px);
+    }
+    .volume-control input[type=range]{ width: 60%; accent-color: var(--neon-cyan); }
+
+    .visualizer {
+      display: none;
+      margin: 16px auto 0;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: 0 0 18px rgba(0, 255, 255, 0.35), inset 0 0 16px rgba(255,0,255,0.18);
+      backdrop-filter: blur(6px);
+    }
+    canvas#visualizerCanvas {
+      width: 100%;
+      height: 128px;
+      display: block;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2));
+      border-radius: 8px;
+      filter: drop-shadow(0 0 6px rgba(0,255,255,0.6));
+    }
+
+    /* === QR Image === */
+    .gambar {
+      margin-top: 14px;
+      max-width: 360px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      opacity: 0; transform: translateY(12px) scale(0.96);
+      transition: all 0.5s ease;
+      display: none;
+    }
+    .gambar.show{ display:block; opacity:1; transform: translateY(0) scale(1); }
+
+    /* === Scroll Reveal === */
+    .reveal{ opacity:0; transform: translateY(24px) scale(.98); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.show{ opacity:1; transform: translateY(0) scale(1); }
+
+    /* === Footer === */
+    footer { text-align: center; padding: 18px; font-size: 0.92rem; color: #d3dae6; opacity: .9; }
+
+    /* === Responsive === */
+    @media (max-width: 640px){
+      .volume-control{ width: 94%; }
+      .btn{ width: 100%; }
+    }
+    /* Tombol Kece */
+.btn-qris {
+  position: relative;
+  display: inline-block;
+  padding: 14px 26px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc);
+  background-size: 300% 300%;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255,0,255,0.6), 0 0 30px rgba(0,255,204,0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+  animation: gradientMove 3s ease infinite;
+}
+.btn-qris:hover {
+  transform: scale(1.07) rotate(-1deg);
+  background-position: 100% 0;
+  box-shadow: 0 0 20px rgba(255,0,255,0.8), 0 0 40px rgba(0,255,204,0.7);
+}
+.btn-qris:active {
+  transform: scale(0.95);
+}
+@keyframes gradientMove {
+  0% { background-position: 0 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Modal Background */
+.qris-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Konten Modal */
+.qris-content {
+  position: relative;
+  background-color: #fff;
+  color: black;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: fit-content;
+  max-width: 90%;
+  text-align: center;
+  animation: zoomIn 0.3s ease;
+}
+
+/* Tombol Close */
+.qris-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+.qris-close:hover {
+  color: red;
+}
+
+/* Efek Pulse pada QRIS */
+.qris-img {
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,255,255,0.6);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(0,255,255,0.6); }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,255,255,0.9); }
+  100% { transform: scale(1); box-shadow: 0 0 15px rgba(0,255,255,0.6); }
+}
+
+/* Animasi Modal */
+@keyframes zoomIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* Tombol Kece Neon */
+.btn-qris {
+  padding: 14px 26px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc);
+  background-size: 300% 300%;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255,0,255,0.6), 0 0 30px rgba(0,255,204,0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+  animation: gradientMove 3s ease infinite;
+}
+.btn-qris:hover {
+  transform: scale(1.07);
+  background-position: 100% 0;
+}
+@keyframes gradientMove {
+  0% { background-position: 0 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+
+
+/* Kotak QRIS Slide-up Premium */
+.qris-content {
+  background: #111;
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(0,255,255,0.6), 0 0 100px rgba(255,0,255,0.4);
+  animation: slideUpBounce 0.5s ease;
+  position: relative;
+}
+
+/* Tombol Close */
+.qris-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+.qris-close:hover {
+  color: red;
+}
+
+/* Gambar QRIS Besar + Glow */
+.qris-img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0,255,255,0.7);
+}
+
+/* Animasi Slide-up + Bounce */
+@keyframes slideUpBounce {
+  0% { transform: translateY(100%); opacity: 0; }
+  60% { transform: translateY(-10px); opacity: 1; }
+  80% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+    /* Tombol Premium */
+.btn-premium {
+  padding: 14px 26px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc);
+  background-size: 300% 300%;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255,0,255,0.6), 0 0 30px rgba(0,255,204,0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+  animation: gradientMove 3s ease infinite;
+}
+.btn-premium:hover {
+  transform: scale(1.07);
+  background-position: 10% 0;
+}
+@keyframes gradientMove {
+  0% { background-position: 0 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Notifikasi */
+.copy-notif {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,255,204,0.9);
+  color: #000;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0,255,255,0.7);
+  animation: fadeInOut 2s ease;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+.marquee-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+  padding: 12px 0;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, #ff00cc, #00ffcc, #3333ff) 1;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff00cc, #00ffcc, #3333ff, #ff00cc);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: marquee 12s linear infinite, colorShift 4s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes colorShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-wrap">
+      <h1 class="title">WELCOME TO WEBSITE ZANN</h1>
+    </div>
+  </header>
+
+  <div class="led-container">
+    <div class="led-text">💡 SELAMAT DATANG!🚀 • 💻 HACKER MODE ON • ⚡ WEBSITE BY ZANN</div>
+  </div>
+
+  <main>
+    <!-- Kontrol Musik -->
+    <div class="controls reveal">
+      <button class="btn btn-pink pulse" onclick="playMusic()">▶ Putar Musik</button>
+      <div class="volume-control">
+        🔊 Volume:
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+      </div>
+      <div class="visualizer" id="visualizerBox">
+        <canvas id="visualizerCanvas"></canvas>
+      </div>
+      <audio id="bgMusic" src="https://files.catbox.moe/gv5fi9.mp3" preload="auto" crossorigin="anonymous"></audio>
+    </div>
+    
+    
+<div class="marquee-wrapper">
+  <div class="marquee-content">
+    BERIKUT ADALAH PRODUK SC YANG SAYA JUAL👇
+
+  </div>
+</div>
+          <section class="card reveal" style="text-align:center;">
+          <h2 style="margin:0 0 6px"> OPEN SC JUSTIN 🩸
+</h2>
+          </section>
+        
+           <section class="card reveal" style="text-align:center;">
+       <ul style="margin:0; padding-left:18px;">
+        <li>PREE ORDER JUSTIN V21 : 50K </li>
+        <li>RESSELER IDENT : 130K</li>
+        <li>BRESSELER NO IDENT : 80K</li>
+        <li>BUYER VIP PERMANEN : 100K</li>
+          </section>
+
+
+
+  </div>
+</div>
+          <section class="card reveal" style="text-align:center;">
+          <h2 style="margin:0 0 6px"> OPEN SC TREDIC INVICTUS 🔥
+</h2>
+          </section>
+        
+           <section class="card reveal" style="text-align:center;">
+       <ul style="margin:0; padding-left:18px;">
+        <li>FREE UP 3X : 70K</li>
+        <li>FREE UP MANEN : 110K</li>
+        <li>RESSELER : 80K</li>
+        <li>PARTNER : 170K</li>
+          </section>
+  </div>
+</div>
+
+
+  </div>
+</div>
+          <section class="card reveal" style="text-align:center;">
+          <h2 style="margin:0 0 6px"> OPEN SC NIKA ☀️</h2>
+          </section>
+        
+           <section class="card reveal" style="text-align:center;">
+       <ul style="margin:0; padding-left:18px;">
+        <li>PREE ORDER NIKA V14 : 25K</li>
+        <li>RESELLER : 70K</li>
+        <li>PARTNER : 120K</li>
+        <li>T.KANAN : 170K</li>
+          </section>
+<div class="marquee-wrapper">
+  <div class="marquee-content">
+    PRODUK MURIB WEBSITE👇
+  </div>
+</div>
+
+         
+          <section class="card reveal" style="text-align:center;">
+          <h2 style="margin:0 0 6px">  OPEN MURID WEBSITE 🔥 </h2>
+          </section>
+          <h2 style="margin:0 0 6px"> KEUNTUNGAN 👇  </h2>
+        
+           <section class="card reveal" style="text-align:center;">
+       <ul style="margin:0; padding-left:18px;">
+        <li>DAPAT CODE HTML KECEE </li>
+        <li>DAPAT DOMAIN PRIBADI</li>
+        <li>BISA BUAT WEBSITE KAYAK INI </li>
+        <li>BISA RINAME WEBSITE </li>
+      </ul>
+          </section>
+
+
+  <div class="marquee-wrapper">
+  <div class="marquee-content">
+      🚀 ALL PAYMENT ON !! 
+      ______________🚀 ALL PAYMENT ON !! 💎_______________
+      🚀 ALL PAYMENT ON !! 💎
+      ______________🚀 ALL PAYMENT ON !! 💎_______________
+  </div>
+</div>
+    <section class="card reveal">
+      <ul style="margin:0; padding-left:18px;">
+        <li>RESSELER PANEL : 12K</li>
+        <li>ADMIN PANEL : 15K</li>
+        <li>OWNER PANEL : 25K</li>
+        <li>T.KANAN PANEL : 45K</li>
+        <li>MURBAND : 15K</li>
+      </ul>
+    </section>
+    
+      <section class="card reveal">
+Transaksi Bisa Melalui Website ini,, Wajib Ss Bukti Transfer Ke Owner ,, Chat Saya Pencet button di bawah 
+    </section>
+    <!-- Tombol Copy Nomor DANA -->
+<button class="btn-premium" onclick="copyDana()">💸 SALIN NOMOR DANA</button>
+
+<!-- Notifikasi -->
+<div id="copyNotif" class="copy-notif">DONE SALIN PAYMENT DANA ✅</div>
+  
+  
+  <script>
+function copyDana() {
+  const nomorDana = "081318753654"; // Nomor DANA bos
+  navigator.clipboard.writeText(nomorDana).then(() => {
+    const notif = document.getElementById('copyNotif');
+    notif.style.display = 'block';
+    setTimeout(() => {
+      notif.style.display = 'none';
+    }, 2000);
+  }).catch(err => {
+    alert("Gagal menyalin nomor: " + err);
+  });
+}
+</script>
+
+
+    <!-- QR & Pembayaran -->
+<button class="btn-qris" onclick="openQris()">QRIS ALL PAYMENT 🛒</button>
+
+<!-- Modal -->
+<div id="qrisModal" class="qris-modal">
+  <div class="qris-content">
+    <span class="qris-close" onclick="closeQris()">&times;</span>
+    <h2>QRIS Pembayaran</h2>
+    <img class="qris-img" src="BELUM TERSEDIA" alt="QRIS">
+  </div>
+</div>
+<script>
+function openQris() {
+  document.getElementById('qrisModal').style.display = 'flex';
+}
+function closeQris() {
+  document.getElementById('qrisModal').style.display = 'none';
+}
+window.onclick = function(event) {
+  const modal = document.getElementById('qrisModal');
+  if (event.target === modal) {
+    closeQris();
+  }
+}
+</script>
+    
+
+    <!-- Kontak -->
+    
+    
+              <section class="card reveal" style="text-align:center;">
+      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+        <a href="https://t.me/zannoffc" target="_blank" class="btn btn-blue">TELE OWNER</a>
+          </section>
+          
+          
+          
+           <section class="card reveal" style="text-align:center;">
+        <a href="https://whatsapp.com/channel/0029VbAjmPmFy72LftTTFp0f" target="_blank" class="btn btn-green">CHANEL WHATSHAP OWNER</a>
+      </div>
+       </section>
+       
+       
+       
+
+
+  <footer>&copy; Zann</footer>
+
+  <script>
+    // === Musik & Visualizer ===
+    const music = document.getElementById('bgMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeBox = document.querySelector('.volume-control');
+    const visualizerBox = document.getElementById('visualizerBox');
+    const canvas = document.getElementById('visualizerCanvas');
+    const ctx = canvas.getContext('2d');
+    let audioCtx, analyser, source, dataArray, rafId;
+
+    function sizeCanvas() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    }
+    window.addEventListener('resize', sizeCanvas);
+
+    function initAudio() {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 64; // ringan & stabil
+      source = audioCtx.createMediaElementSource(music);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+    }
+
+    function draw() {
+      rafId = requestAnimationFrame(draw);
+      sizeCanvas();
+      analyser.getByteFrequencyData(dataArray);
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const bars = dataArray.length;
+      const barWidth = Math.max(2, (w / bars) * 0.8);
+      const gap = (w / bars) * 0.2;
+      let x = 0;
+
+      for (let i = 0; i < bars; i++) {
+        const v = dataArray[i];
+        const barHeight = Math.max(2, (v / 255) * (h - 8));
+        const y = h - barHeight;
+
+        const grad = ctx.createLinearGradient(0, y, 0, h);
+        grad.addColorStop(0, 'rgba(0,255,255,0.95)');
+        grad.addColorStop(0.5, 'rgba(255,0,255,0.9)');
+        grad.addColorStop(1, 'rgba(255,255,0,0.9)');
+        ctx.fillStyle = grad;
+        ctx.shadowColor = 'rgba(0,255,255,0.7)';
+        ctx.shadowBlur = 10;
+
+        const r = 5;
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + barWidth, y, x + barWidth, y + barHeight, r);
+        ctx.arcTo(x + barWidth, y + barHeight, x, y + barHeight, r);
+        ctx.arcTo(x, y + barHeight, x, y, r);
+        ctx.arcTo(x, y, x + barWidth, y, r);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.fillRect(x, y - 2, barWidth, 1.5);
+
+        x += barWidth + gap;
+      }
+    }
+
+    function playMusic() {
+      initAudio();
+      sizeCanvas();
+      music.play().then(() => {
+        document.querySelector('.btn-pink').style.display = 'none';
+        volumeBox.style.display = 'block';
+        visualizerBox.style.display = 'block';
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        cancelAnimationFrame(rafId);
+        draw();
+      }).catch(() => {
+        alert("Klik tombol play untuk memulai musik");
+      });
+    }
+
+    volumeSlider.addEventListener('input', () => { music.volume = volumeSlider.value; });
+    music.addEventListener('pause', () => cancelAnimationFrame(rafId));
+    music.addEventListener('ended', () => cancelAnimationFrame(rafId));
+
+    // === QR & Salin DANA ===
+    function masuk(){ document.getElementById('gambar').classList.add('show'); }
+    function kembali(){ document.getElementById('gambar').classList.remove('show'); }
+    function copyDana(){
+      navigator.clipboard.writeText("081318753654")
+        .then(() => alert("Nomor DANA berhasil disalin!"))
+        .catch(() => alert("Gagal menyalin nomor."));
+    }
+
+    // === Scroll Reveal (IntersectionObserver) ===
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: 0.14 });
+    revealEls.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
