@@ -615,7 +615,7 @@ Transaksi Bisa Melalui Website ini,, Wajib Ss Bukti Transfer Ke Owner ,, Chat Sa
   
   <script>
 function copyDana() {
-  const nomorDana = "081318753654"; // Nomor DANA bos
+  const nomorDana = "SEDANG TIDAK AKTIF"; / bos
   navigator.clipboard.writeText(nomorDana).then(() => {
     const notif = document.getElementById('copyNotif');
     notif.style.display = 'block';
@@ -771,7 +771,7 @@ window.onclick = function(event) {
     function masuk(){ document.getElementById('gambar').classList.add('show'); }
     function kembali(){ document.getElementById('gambar').classList.remove('show'); }
     function copyDana(){
-      navigator.clipboard.writeText("081318753654")
+      navigator.clipboard.writeText("TIDAK SEDANG AKTIF")
         .then(() => alert("Nomor DANA berhasil disalin!"))
         .catch(() => alert("Gagal menyalin nomor."));
     }
